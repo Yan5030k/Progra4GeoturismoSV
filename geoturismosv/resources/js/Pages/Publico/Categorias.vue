@@ -10,7 +10,13 @@ defineProps({
     <div class="min-h-screen bg-gray-100">
         <header class="bg-emerald-700 text-white">
             <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-                <Link href="/" class="text-2xl font-bold">GeoTurismoSV</Link>
+                <Link href="/" class="flex items-center gap-3">
+                    <img
+                        src="/img/logo-geoturismosv.png"
+                        alt="Logo GeoTurismoSV"
+                        class="h-12 w-auto rounded bg-white px-2 py-1"
+                    >
+                </Link>
                 <div class="flex gap-4">
                     <Link href="/">Inicio</Link>
                     <Link href="/destinos">Destinos</Link>
