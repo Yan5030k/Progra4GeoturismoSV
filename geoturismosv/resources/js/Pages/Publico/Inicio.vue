@@ -8,12 +8,15 @@ defineProps({
 
 <template>
     <div class="min-h-screen bg-gray-100">
-        <header class="bg-emerald-700 text-white">
+        <header class="bg-[#0b6fb3] text-white shadow">
             <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-                <div>
-                    <h1 class="text-2xl font-bold">GeoTurismoSV</h1>
-                    <p class="text-sm">Donde cada lugar cuenta una historia</p>
-                </div>
+                <Link href="/" class="flex items-center gap-3">
+                    <img
+                        src="/img/logo-geoturismosv.png"
+                        alt="Logo GeoTurismoSV"
+                        class="h-14 w-auto rounded bg-white px-2 py-1"
+                    >
+                </Link>
 
                 <div class="flex gap-4">
                     <Link href="/" class="hover:underline">Inicio</Link>
@@ -39,10 +42,10 @@ defineProps({
                     </p>
 
                     <div class="mt-8 flex gap-4">
-                        <Link href="/destinos" class="rounded bg-emerald-700 px-5 py-3 text-white">
+                        <Link href="/destinos" class="rounded bg-[#168a1a] px-5 py-3 text-white">
                             Explorar destinos
                         </Link>
-                        <Link href="/register" class="rounded border border-emerald-700 px-5 py-3 text-emerald-700">
+                        <Link href="/register" class="rounded border border-[#168a1a] px-5 py-3 text-[#168a1a]">
                             Crear cuenta
                         </Link>
                     </div>
