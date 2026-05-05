@@ -1,5 +1,5 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
+import PublicNavbar from '@/Components/PublicNavbar.vue';
 
 defineProps({
     categorias: Array,
@@ -7,23 +7,8 @@ defineProps({
 </script>
 
 <template>
-    <div class="min-h-screen bg-gray-100">
-        <header class="bg-[#0b6fb3] text-white shadow">
-            <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-                <Link href="/" class="flex items-center gap-3">
-                    <img
-                        src="/img/logo-geoturismosv.png"
-                        alt="Logo GeoTurismoSV"
-                        class="h-12 w-auto rounded bg-white px-2 py-1"
-                    >
-                </Link>
-                <div class="flex gap-4">
-                    <Link href="/">Inicio</Link>
-                    <Link href="/destinos">Destinos</Link>
-                    <Link href="/login">Iniciar sesión</Link>
-                </div>
-            </nav>
-        </header>
+    <div class="min-h-screen bg-slate-50">
+        <PublicNavbar />
 
         <main class="mx-auto max-w-7xl px-6 py-10">
             <h1 class="text-3xl font-bold text-gray-900">Categorías turísticas</h1>
@@ -35,8 +20,10 @@ defineProps({
                 <article
                     v-for="categoria in categorias"
                     :key="categoria.id"
-                    class="rounded-lg bg-white p-6 shadow"
+                    class="rounded-xl border border-blue-100 bg-white p-6 shadow transition hover:-translate-y-1 hover:shadow-lg"
                 >
+                    <div class="mb-4 h-2 w-20 rounded-full bg-gradient-to-r from-[#0b6fb3] to-[#168a1a]"></div>
+
                     <h2 class="text-xl font-bold text-gray-900">
                         {{ categoria.nombre }}
                     </h2>
@@ -45,7 +32,7 @@ defineProps({
                         {{ categoria.descripcion }}
                     </p>
 
-                    <p class="mt-4 text-sm font-semibold text-emerald-700">
+                    <p class="mt-4 inline-block rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-[#0b6fb3]">
                         {{ categoria.destinos_count }} destinos registrados
                     </p>
                 </article>

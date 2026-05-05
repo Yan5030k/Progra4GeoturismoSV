@@ -1,5 +1,6 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
+import PublicNavbar from '@/Components/PublicNavbar.vue';
 
 defineProps({
     destinos: Array,
@@ -8,27 +9,7 @@ defineProps({
 
 <template>
     <div class="min-h-screen bg-gray-100">
-        <header class="bg-[#0b6fb3] text-white shadow">
-            <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-                <Link href="/" class="flex items-center gap-3">
-                    <img
-                        src="/img/logo-geoturismosv.png"
-                        alt="Logo GeoTurismoSV"
-                        class="h-14 w-auto rounded bg-white px-2 py-1"
-                    >
-                </Link>
-
-                <div class="flex gap-4">
-                    <Link href="/" class="hover:underline">Inicio</Link>
-                    <Link href="/destinos" class="hover:underline">Destinos</Link>
-                    <Link href="/categorias" class="hover:underline">Categorías</Link>
-                    <Link href="/sobre-nosotros" class="hover:underline">Sobre nosotros</Link>
-                    <Link href="/login" class="rounded bg-white px-4 py-2 text-emerald-700">
-                        Iniciar sesión
-                    </Link>
-                </div>
-            </nav>
-        </header>
+        <PublicNavbar />
 
         <main>
             <section class="bg-white py-16">
@@ -42,10 +23,11 @@ defineProps({
                     </p>
 
                     <div class="mt-8 flex gap-4">
-                        <Link href="/destinos" class="rounded bg-[#168a1a] px-5 py-3 text-white">
+                        <Link href="/destinos" class="rounded bg-[#168a1a] px-5 py-3 font-semibold text-white shadow hover:bg-green-700">
                             Explorar destinos
                         </Link>
-                        <Link href="/register" class="rounded border border-[#168a1a] px-5 py-3 text-[#168a1a]">
+
+                        <Link href="/register" class="rounded border border-[#0b6fb3] px-5 py-3 font-semibold text-[#0b6fb3] hover:bg-blue-50">
                             Crear cuenta
                         </Link>
                     </div>
@@ -71,7 +53,7 @@ defineProps({
                             >
 
                             <div class="p-5">
-                                <p class="text-sm font-semibold text-emerald-700">
+                                <p class="text-sm font-semibold text-[#168a1a]">
                                     {{ destino.categoria?.nombre }}
                                 </p>
                                 <h4 class="mt-1 text-xl font-bold">
@@ -82,7 +64,7 @@ defineProps({
                                 </p>
                                 <Link
                                     :href="`/destinos/${destino.id}`"
-                                    class="mt-4 inline-block text-emerald-700 hover:underline"
+                                    class="mt-4 inline-block text-[#0b6fb3] hover:underline"
                                 >
                                     Ver detalle
                                 </Link>

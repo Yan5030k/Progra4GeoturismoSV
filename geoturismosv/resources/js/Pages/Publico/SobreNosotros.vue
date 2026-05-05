@@ -1,46 +1,38 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
+import PublicNavbar from '@/Components/PublicNavbar.vue';
 </script>
 
 <template>
-    <div class="min-h-screen bg-gray-100">
-        <header class="bg-[#0b6fb3] text-white shadow">
-            <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-                <Link href="/" class="flex items-center gap-3">
-                    <img
-                        src="/img/logo-geoturismosv.png"
-                        alt="Logo GeoTurismoSV"
-                        class="h-12 w-auto rounded bg-white px-2 py-1"
-                    >
-                </Link>
-                <div class="flex gap-4">
-                    <Link href="/">Inicio</Link>
-                    <Link href="/destinos">Destinos</Link>
-                    <Link href="/categorias">Categorías</Link>
-                    <Link href="/login">Iniciar sesión</Link>
-                </div>
-            </nav>
-        </header>
+    <div class="min-h-screen bg-slate-50">
+        <PublicNavbar />
 
         <main class="mx-auto max-w-5xl px-6 py-10">
-            <section class="rounded-lg bg-white p-8 shadow">
-                <h1 class="text-3xl font-bold text-gray-900">Sobre GeoTurismoSV</h1>
+            <section class="overflow-hidden rounded-xl bg-white shadow-lg">
+                <div class="h-3 bg-gradient-to-r from-[#0b6fb3] via-[#1690c8] to-[#168a1a]"></div>
 
-                <p class="mt-4 text-gray-700">
-                    GeoTurismoSV es una empresa ficticia salvadoreña dedicada a la
-                    promoción turística digital de El Salvador.
-                </p>
+                <div class="p-8">
+                    <h1 class="text-3xl font-bold text-gray-900">Sobre GeoTurismoSV</h1>
 
-                <p class="mt-4 text-gray-700">
-                    La plataforma busca resolver el problema de la información turística
-                    dispersa, centralizando destinos, categorías y recomendaciones en un
-                    sistema web ordenado, accesible e intuitivo.
-                </p>
+                    <p class="mt-4 leading-relaxed text-gray-700">
+                        GeoTurismoSV es una empresa ficticia salvadoreña dedicada a la
+                        promoción turística digital de El Salvador.
+                    </p>
 
-                <p class="mt-4 text-gray-700">
-                    Nuestro lema es:
-                    <strong>“Donde cada lugar cuenta una historia”.</strong>
-                </p>
+                    <p class="mt-4 leading-relaxed text-gray-700">
+                        La plataforma busca resolver el problema de la información turística
+                        dispersa, centralizando destinos, categorías y recomendaciones en un
+                        sistema web ordenado, accesible e intuitivo.
+                    </p>
+
+                    <div class="mt-6 rounded-xl bg-blue-50 p-6">
+                        <p class="text-lg text-gray-700">
+                            Nuestro lema es:
+                            <strong class="text-[#0b6fb3]">
+                                “Donde cada lugar cuenta una historia”.
+                            </strong>
+                        </p>
+                    </div>
+                </div>
             </section>
         </main>
     </div>
