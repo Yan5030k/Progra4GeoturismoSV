@@ -28,13 +28,27 @@ Route::get('/categorias', [PublicoController::class, 'categorias'])->name('categ
 Route::get('/sobre-nosotros', [PublicoController::class, 'sobreNosotros'])->name('sobre');
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    if (auth()->user()->rol === 'admin') {
+        return redirect()->route('admin.dashboard');
+    }
+
+    return redirect()->route('usuario.panel');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/usuario/panel', [UsuarioController::class, 'panel'])->name('usuario.panel');
+});
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/usuarios', [AdminController::class, 'usuarios'])->name('usuarios');
 });
 
 require __DIR__.'/auth.php';
