@@ -11,7 +11,7 @@ const cerrarSesion = () => {
         <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
             <Link href="/usuario/panel" class="flex items-center">
                 <img
-                    src="/img/logo-geoturismosv-recortado.png"
+                    src="/img/logo-geoturismosv.png"
                     alt="Logo GeoTurismoSV"
                     class="h-14 w-auto"
                 >

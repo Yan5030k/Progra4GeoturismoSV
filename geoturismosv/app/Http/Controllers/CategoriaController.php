@@ -4,62 +4,105 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class CategoriaController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Lista todas las categorías registradas.
      */
     public function index()
     {
-        //
+        $categorias = Categoria::latest()->get();
+
+        return Inertia::render('Admin/Categorias/Index', [
+            'categorias' => $categorias,
+        ]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Muestra el formulario para crear una categoría.
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/Categorias/Create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Guarda una nueva categoría.
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:100|unique:categorias,nombre',
+            'descripcion' => 'required|string|min:10',
+            'estado' => 'required|boolean',
+        ], [
+            'nombre.required' => 'El nombre de la categoría es obligatorio.',
+            'nombre.unique' => 'Ya existe una categoría con ese nombre.',
+            'descripcion.required' => 'La descripción es obligatoria.',
+            'descripcion.min' => 'La descripción debe tener al menos 10 caracteres.',
+            'estado.required' => 'Debe seleccionar un estado.',
+        ]);
+
+        Categoria::create($request->only([
+            'nombre',
+            'descripcion',
+            'estado',
+        ]));
+
+        return redirect()
+            ->route('admin.categorias.index')
+            ->with('success', 'Categoría creada correctamente.');
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Categoria $categoria)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
+     * Muestra el formulario para editar una categoría.
      */
     public function edit(Categoria $categoria)
     {
-        //
+        return Inertia::render('Admin/Categorias/Edit', [
+            'categoria' => $categoria,
+        ]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza una categoría existente.
      */
     public function update(Request $request, Categoria $categoria)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:100|unique:categorias,nombre,' . $categoria->id,
+            'descripcion' => 'required|string|min:10',
+            'estado' => 'required|boolean',
+        ], [
+            'nombre.required' => 'El nombre de la categoría es obligatorio.',
+            'nombre.unique' => 'Ya existe otra categoría con ese nombre.',
+            'descripcion.required' => 'La descripción es obligatoria.',
+            'descripcion.min' => 'La descripción debe tener al menos 10 caracteres.',
+            'estado.required' => 'Debe seleccionar un estado.',
+        ]);
+
+        $categoria->update($request->only([
+            'nombre',
+            'descripcion',
+            'estado',
+        ]));
+
+        return redirect()
+            ->route('admin.categorias.index')
+            ->with('success', 'Categoría actualizada correctamente.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina una categoría.
      */
     public function destroy(Categoria $categoria)
     {
-        //
+        $categoria->delete();
+
+        return redirect()
+            ->route('admin.categorias.index')
+            ->with('success', 'Categoría eliminada correctamente.');
     }
 }

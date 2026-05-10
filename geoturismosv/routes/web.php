@@ -49,6 +49,8 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/usuarios', [AdminController::class, 'usuarios'])->name('usuarios');
+
+    Route::resource('categorias', CategoriaController::class);
 });
 
 require __DIR__.'/auth.php';
