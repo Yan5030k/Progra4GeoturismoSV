@@ -17,12 +17,15 @@ defineProps({
                     <img src="/images/hero.png" alt="Paisaje El Salvador" class="h-full w-full object-cover opacity-40">
                 </div>
                 <div class="relative mx-auto max-w-7xl px-6 text-center lg:text-left">
-                    <h2 class="mb-4 text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
-                        Descubrí El Salvador <br class="hidden lg:block"/> de una forma diferente
+                    <h2 class="mb-4 text-5xl font-black tracking-tight text-white sm:text-6xl lg:text-7xl">
+                        Donde cada lugar <br class="hidden lg:block"/>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#168a1a] to-green-400">
+                            cuenta una historia
+                        </span>
                     </h2>
-                    <p class="mx-auto lg:mx-0 max-w-2xl text-lg text-gray-300 sm:text-xl">
-                        GeoTurismoSV centraliza destinos turísticos, recomendaciones y categorías
-                        para ayudarte a elegir tu próxima experiencia dentro del país.
+                    <p class="mx-auto lg:mx-0 max-w-2xl text-lg text-gray-300 sm:text-xl leading-relaxed">
+                        <strong class="font-semibold text-white">Descubrí El Salvador de una forma diferente.</strong> 
+                        GeoTurismoSV centraliza destinos turísticos, recomendaciones y categorías para ayudarte a elegir tu próxima experiencia.
                     </p>
 
                     <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
