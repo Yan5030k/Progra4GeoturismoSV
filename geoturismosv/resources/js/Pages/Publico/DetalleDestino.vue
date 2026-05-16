@@ -21,6 +21,7 @@ const guardarFavorito = () => {
 const eliminarFavorito = () => {
     router.delete(`/favoritos/${props.destino.id}`);
 };
+
 </script>
 
 <template>
