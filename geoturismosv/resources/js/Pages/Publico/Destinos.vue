@@ -6,6 +6,7 @@ defineProps({
     destinos: Array,
     categorias: Array,
 });
+
 </script>
 
 <template>
@@ -14,8 +15,13 @@ defineProps({
 
         <main class="mx-auto max-w-7xl px-6 py-10">
             <h1 class="text-3xl font-bold text-gray-900">Destinos turísticos</h1>
+        
             <p class="mt-2 text-gray-600">
                 Explorá lugares turísticos organizados por categoría y ubicación.
+            </p>
+            
+             <p class="mt-2 text-gray-600">
+                ¡Descubre y disfruta la aventura: El Salvador en un instante!
             </p>
 
             <div class="mt-8 grid gap-6 md:grid-cols-3">
