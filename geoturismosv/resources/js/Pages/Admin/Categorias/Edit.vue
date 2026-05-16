@@ -1,19 +1,36 @@
 <script setup>
-import { Link, useForm } from '@inertiajs/vue3';
+import { Link, useForm, router } from '@inertiajs/vue3';
 import AdminNavbar from '@/Components/AdminNavbar.vue';
 
 const props = defineProps({
-    categoria: Object,
+    categoria: {
+        type: Object,
+        required: true,
+    },
 });
 
 const form = useForm({
-    nombre: props.categoria.nombre,
-    descripcion: props.categoria.descripcion,
+    nombre: props.categoria.nombre ?? '',
+    descripcion: props.categoria.descripcion ?? '',
     estado: Boolean(props.categoria.estado),
 });
 
 const actualizarCategoria = () => {
-    form.put(`/admin/categorias/${props.categoria.id}`);
+    const url = `/admin/categorias/${props.categoria.id}`;
+
+    console.log('Editando categoría ID:', props.categoria.id);
+    console.log('Enviando PUT a:', url);
+
+    router.put(url, {
+        nombre: form.nombre,
+        descripcion: form.descripcion,
+        estado: form.estado,
+    }, {
+        preserveScroll: true,
+        onError: (errors) => {
+            form.errors = errors;
+        },
+    });
 };
 </script>
 
@@ -32,7 +49,7 @@ const actualizarCategoria = () => {
                 </h1>
 
                 <p class="mt-2 text-gray-600">
-                    Modifica la información de la categoría seleccionada.
+                    ID actual de la categoría: {{ categoria.id }}
                 </p>
 
                 <form @submit.prevent="actualizarCategoria" class="mt-8 space-y-6">

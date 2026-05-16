@@ -57,8 +57,21 @@ const eliminarFavorito = () => {
                         </div>
 
                         <div class="rounded-xl bg-green-50 p-4">
-                            <strong class="text-[#168a1a]">Horario</strong>
-                            <p class="mt-1 text-gray-700">{{ destino.horario }}</p>
+                            <strong class="text-[#168a1a]">Horario de atención</strong>
+
+                            <p class="mt-1 text-gray-700">
+                                {{ destino.dias_atencion ?? 'Horario no especificado' }}
+                            </p>
+
+                            <p class="text-gray-700">
+                                <span v-if="destino.hora_apertura && destino.hora_cierre">
+                                    {{ destino.hora_apertura }} - {{ destino.hora_cierre }}
+                                </span>
+
+                                <span v-else>
+                                    Hora no especificada
+                                </span>
+                            </p>
                         </div>
 
                         <div class="rounded-xl bg-orange-50 p-4">

@@ -51,6 +51,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/usuarios', [AdminController::class, 'usuarios'])->name('usuarios');
 
     Route::resource('categorias', CategoriaController::class);
+    Route::resource('destinos', DestinoController::class);
 });
 
 require __DIR__.'/auth.php';
