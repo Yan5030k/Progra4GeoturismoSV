@@ -39,7 +39,7 @@ import PublicNavbar from '@/Components/PublicNavbar.vue';
                         </p>
 
                         <p>
-                            Nuestra misión es simple: ser la brújula que te inspire y te guíe hacia tu próxima gran aventura dentro del "Pulgarcito de América".
+                            Nuestra misión es simple: ser la brújula que te inspire y te guíe hacia tu próxima gran aventura dentro del "Pulgarcito de América", ayudándote a descubrir los destinos, la cultura y las experiencias únicas que hacen de El Salvador un lugar inolvidable.
                         </p>
                     </div>
                 </div>
