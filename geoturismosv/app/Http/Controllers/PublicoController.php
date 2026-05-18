@@ -62,6 +62,7 @@ class PublicoController extends Controller
         return Inertia::render('Publico/DetalleDestino', [
             'destino' => $destino,
             'esFavorito' => $esFavorito,
+            'usuarioLogueado' => auth()->check(),
         ]);
     }
 

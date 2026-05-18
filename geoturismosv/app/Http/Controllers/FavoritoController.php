@@ -3,63 +3,49 @@
 namespace App\Http\Controllers;
 
 use App\Models\Favorito;
+use App\Models\Destino;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class FavoritoController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Muestra los destinos favoritos del usuario autenticado.
      */
     public function index()
     {
-        //
+        $favoritos = Favorito::with('destino.categoria')
+            ->where('user_id', auth()->id())
+            ->latest()
+            ->get();
+
+        return Inertia::render('Favoritos/Index', [
+            'favoritos' => $favoritos,
+        ]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Guarda un destino como favorito del usuario autenticado.
      */
-    public function create()
+    public function store(Destino $destino)
     {
-        //
+        Favorito::firstOrCreate([
+            'user_id' => auth()->id(),
+            'destino_id' => $destino->id,
+        ]);
+
+        return back(303)->with('success', 'Destino agregado a favoritos.');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Elimina un destino de favoritos del usuario autenticado.
      */
-    public function store(Request $request)
+    public function destroy(Destino $destino)
     {
-        //
-    }
+        Favorito::where('user_id', auth()->id())
+            ->where('destino_id', $destino->id)
+            ->delete();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Favorito $favorito)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Favorito $favorito)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Favorito $favorito)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Favorito $favorito)
-    {
-        //
+        return back(303)->with('success', 'Destino eliminado de favoritos.');
     }
 }

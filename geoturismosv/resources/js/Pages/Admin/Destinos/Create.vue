@@ -11,10 +11,14 @@ const form = useForm({
     nombre: '',
     descripcion: '',
     ubicacion: '',
+    departamento: '',
+    municipio: '',
+    latitud: '',
+    longitud: '',
     direccion: '',
-    imagen: '',
+    imagen: null,
     costo_estimado: 0,
-    dias_atencion: '',
+    dias_atencion: 'Todos los días',
     hora_apertura: '',
     hora_cierre: '',
     recomendaciones: '',
@@ -22,7 +26,18 @@ const form = useForm({
 });
 
 const guardarDestino = () => {
-    form.post('/admin/destinos');
+    console.log('Creando destino:', form.data());
+
+    form.post('/admin/destinos', {
+        forceFormData: true,
+        preserveScroll: true,
+        onSuccess: () => {
+            console.log('Destino creado correctamente');
+        },
+        onError: (errors) => {
+            console.log('Errores al crear destino:', errors);
+        },
+    });
 };
 </script>
 
@@ -92,6 +107,90 @@ const guardarDestino = () => {
                     </div>
 
                     <div>
+                        <label class="block font-semibold text-gray-700">Departamento</label>
+
+                        <select
+                            v-model="form.departamento"
+                            class="mt-2 w-full rounded-lg border-gray-300 shadow-sm focus:border-[#0b6fb3] focus:ring-[#0b6fb3]"
+                        >
+                            <option value="">Seleccione un departamento</option>
+                            <option value="Ahuachapán">Ahuachapán</option>
+                            <option value="Santa Ana">Santa Ana</option>
+                            <option value="Sonsonate">Sonsonate</option>
+                            <option value="Chalatenango">Chalatenango</option>
+                            <option value="La Libertad">La Libertad</option>
+                            <option value="San Salvador">San Salvador</option>
+                            <option value="Cuscatlán">Cuscatlán</option>
+                            <option value="La Paz">La Paz</option>
+                            <option value="Cabañas">Cabañas</option>
+                            <option value="San Vicente">San Vicente</option>
+                            <option value="Usulután">Usulután</option>
+                            <option value="San Miguel">San Miguel</option>
+                            <option value="Morazán">Morazán</option>
+                            <option value="La Unión">La Unión</option>
+                        </select>
+
+                        <p v-if="form.errors.departamento" class="mt-2 text-sm text-red-600">
+                            {{ form.errors.departamento }}
+                        </p>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-gray-700">Municipio o distrito</label>
+
+                        <input
+                            v-model="form.municipio"
+                            type="text"
+                            class="mt-2 w-full rounded-lg border-gray-300 shadow-sm focus:border-[#0b6fb3] focus:ring-[#0b6fb3]"
+                            placeholder="Ejemplo: Tamanique"
+                        >
+
+                        <p v-if="form.errors.municipio" class="mt-2 text-sm text-red-600">
+                            {{ form.errors.municipio }}
+                        </p>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-gray-700">Latitud</label>
+
+                        <input
+                            v-model="form.latitud"
+                            type="number"
+                            step="0.0000001"
+                            class="mt-2 w-full rounded-lg border-gray-300 shadow-sm focus:border-[#0b6fb3] focus:ring-[#0b6fb3]"
+                            placeholder="Ejemplo: 13.4942000"
+                        >
+
+                        <p class="mt-1 text-sm text-gray-500">
+                            Opcional. Se utilizará para el mapa turístico.
+                        </p>
+
+                        <p v-if="form.errors.latitud" class="mt-2 text-sm text-red-600">
+                            {{ form.errors.latitud }}
+                        </p>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-gray-700">Longitud</label>
+
+                        <input
+                            v-model="form.longitud"
+                            type="number"
+                            step="0.0000001"
+                            class="mt-2 w-full rounded-lg border-gray-300 shadow-sm focus:border-[#0b6fb3] focus:ring-[#0b6fb3]"
+                            placeholder="Ejemplo: -89.3812000"
+                        >
+
+                        <p class="mt-1 text-sm text-gray-500">
+                            Opcional. Se utilizará para el mapa turístico.
+                        </p>
+
+                        <p v-if="form.errors.longitud" class="mt-2 text-sm text-red-600">
+                            {{ form.errors.longitud }}
+                        </p>
+                    </div>
+
+                    <div>
                         <label class="block font-semibold text-gray-700">Dirección o referencia</label>
                         <input
                             v-model="form.direccion"
@@ -104,14 +203,16 @@ const guardarDestino = () => {
                     <div>
                         <label class="block font-semibold text-gray-700">Imagen</label>
                         <input
-                            v-model="form.imagen"
-                            type="text"
-                            class="mt-2 w-full rounded-lg border-gray-300 shadow-sm focus:border-[#0b6fb3] focus:ring-[#0b6fb3]"
-                            placeholder="img/destinos/tunco.jpg"
+                            type="file"
+                            accept="image/*"
+                            @change="form.imagen = $event.target.files[0]"
+                            class="mt-2 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-[#0b6fb3] focus:ring-[#0b6fb3]"
                         >
+
                         <p class="mt-1 text-sm text-gray-500">
-                            La imagen debe estar en public/img/destinos.
+                            Selecciona una imagen en formato jpg, jpeg, png o webp. Máximo 2 MB.
                         </p>
+
                         <p v-if="form.errors.imagen" class="mt-2 text-sm text-red-600">
                             {{ form.errors.imagen }}
                         </p>

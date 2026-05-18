@@ -1,12 +1,10 @@
 <script setup>
 import { computed } from 'vue';
-import { Link, usePage } from '@inertiajs/vue3';
+import { Link, usePage, router } from '@inertiajs/vue3';
 
 const page = usePage();
 
-const usuario = computed(() => {
-    return page.props.auth?.user ?? null;
-});
+const usuario = computed(() => page.props.auth?.user ?? null);
 
 const rutaPanel = computed(() => {
     if (!usuario.value) {
@@ -17,6 +15,10 @@ const rutaPanel = computed(() => {
         ? '/admin/dashboard'
         : '/usuario/panel';
 });
+
+const cerrarSesion = () => {
+    router.post('/logout');
+};
 </script>
 
 <template>
@@ -67,13 +69,30 @@ const rutaPanel = computed(() => {
                     Iniciar sesión
                 </Link>
 
-                <Link
-                    v-else
-                    :href="rutaPanel"
-                    class="rounded-full bg-[#168a1a] px-5 py-2 font-semibold text-white shadow transition hover:bg-green-700"
-                >
-                    Mi panel
-                </Link>
+                <template v-else>
+                    <Link
+                        :href="rutaPanel"
+                        class="rounded-full bg-[#168a1a] px-5 py-2 font-semibold text-white shadow transition hover:bg-green-700"
+                    >
+                        Mi panel
+                    </Link>
+
+                    <Link
+                        v-if="usuario.rol === 'usuario'"
+                        href="/favoritos"
+                        class="rounded-full bg-[#0b6fb3] px-5 py-2 font-semibold text-white shadow transition hover:bg-blue-700"
+                    >
+                        Mis favoritos
+                    </Link>
+
+                    <button
+                        type="button"
+                        @click="cerrarSesion"
+                        class="rounded-full bg-red-600 px-5 py-2 font-semibold text-white shadow transition hover:bg-red-700"
+                    >
+                        Cerrar sesión
+                    </button>
+                </template>
             </div>
         </nav>
 

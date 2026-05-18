@@ -1,27 +1,24 @@
 <script setup>
-import { computed } from 'vue';
-import { Link, usePage, router } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import PublicNavbar from '@/Components/PublicNavbar.vue';
 
 const props = defineProps({
     destino: Object,
     esFavorito: Boolean,
-});
-
-const page = usePage();
-
-const usuarioAutenticado = computed(() => {
-    return page.props.auth?.user ?? null;
+    usuarioLogueado: Boolean,
 });
 
 const guardarFavorito = () => {
-    router.post(`/favoritos/${props.destino.id}`);
+    router.post(`/favoritos/${props.destino.id}`, {}, {
+        preserveScroll: true,
+    });
 };
 
 const eliminarFavorito = () => {
-    router.delete(`/favoritos/${props.destino.id}`);
+    router.delete(`/favoritos/${props.destino.id}`, {
+        preserveScroll: true,
+    });
 };
-
 </script>
 
 <template>
@@ -61,7 +58,7 @@ const eliminarFavorito = () => {
                             <strong class="text-[#168a1a]">Horario de atención</strong>
 
                             <p class="mt-1 text-gray-700">
-                                {{ destino.dias_atencion ?? 'Horario no especificado' }}
+                                {{ destino.dias_atencion ?? destino.horario ?? 'Horario no especificado' }}
                             </p>
 
                             <p class="text-gray-700">
@@ -91,10 +88,30 @@ const eliminarFavorito = () => {
                     </section>
 
                     <section class="mt-6">
-                        <h2 class="text-2xl font-bold text-gray-900">Dirección o referencia</h2>
-                        <p class="mt-2 leading-relaxed text-gray-700">
-                            {{ destino.direccion }}
-                        </p>
+                        <h2 class="text-2xl font-bold text-gray-900">Ubicación</h2>
+
+                        <div class="mt-3 grid gap-4 md:grid-cols-2">
+                            <div class="rounded-xl bg-blue-50 p-4">
+                                <strong class="text-[#0b6fb3]">Departamento</strong>
+                                <p class="mt-1 text-gray-700">
+                                    {{ destino.departamento ?? 'No especificado' }}
+                                </p>
+                            </div>
+
+                            <div class="rounded-xl bg-green-50 p-4">
+                                <strong class="text-[#168a1a]">Municipio o distrito</strong>
+                                <p class="mt-1 text-gray-700">
+                                    {{ destino.municipio ?? 'No especificado' }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 rounded-xl bg-slate-100 p-4">
+                            <strong class="text-gray-900">Dirección o referencia</strong>
+                            <p class="mt-1 leading-relaxed text-gray-700">
+                                {{ destino.direccion ?? 'No especificada' }}
+                            </p>
+                        </div>
                     </section>
 
                     <section class="mt-6">
@@ -104,11 +121,19 @@ const eliminarFavorito = () => {
                         </p>
                     </section>
 
-                    <div v-if="usuarioAutenticado" class="mt-8">
+                    <div v-if="usuarioLogueado" class="mt-8 rounded-xl bg-slate-100 p-5">
+                        <h2 class="text-xl font-bold text-gray-900">
+                            ¿Te interesa este destino?
+                        </h2>
+
+                        <p class="mt-1 text-gray-600">
+                            Guárdalo en favoritos para consultarlo más tarde desde tu panel de usuario.
+                        </p>
+
                         <button
                             v-if="!esFavorito"
                             @click="guardarFavorito"
-                            class="rounded-full bg-[#168a1a] px-5 py-3 font-semibold text-white shadow transition hover:bg-green-700"
+                            class="mt-4 rounded-full bg-[#168a1a] px-5 py-3 font-semibold text-white shadow transition hover:bg-green-700"
                         >
                             Guardar en favoritos
                         </button>
@@ -116,14 +141,24 @@ const eliminarFavorito = () => {
                         <button
                             v-else
                             @click="eliminarFavorito"
-                            class="rounded-full bg-red-600 px-5 py-3 font-semibold text-white shadow transition hover:bg-red-700"
+                            class="mt-4 rounded-full bg-red-600 px-5 py-3 font-semibold text-white shadow transition hover:bg-red-700"
                         >
                             Eliminar de favoritos
                         </button>
                     </div>
 
-                    <div v-else class="mt-8 rounded-xl border border-yellow-200 bg-yellow-50 p-4 text-yellow-800">
-                        Iniciá sesión para guardar este destino en favoritos.
+                    <div v-else class="mt-8 rounded-xl border border-yellow-200 bg-yellow-50 p-5 text-yellow-800">
+                        <h2 class="font-bold">Inicia sesión para guardar favoritos</h2>
+                        <p class="mt-1">
+                            Crea una cuenta o inicia sesión para guardar este destino dentro de tus favoritos.
+                        </p>
+
+                        <Link
+                            href="/login"
+                            class="mt-4 inline-block rounded-full bg-[#f4a000] px-5 py-2 font-semibold text-white shadow hover:bg-orange-500"
+                        >
+                            Iniciar sesión
+                        </Link>
                     </div>
                 </div>
             </article>

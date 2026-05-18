@@ -44,6 +44,10 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/usuario/panel', [UsuarioController::class, 'panel'])->name('usuario.panel');
+
+    Route::get('/favoritos', [FavoritoController::class, 'index'])->name('favoritos.index');
+    Route::post('/favoritos/{destino}', [FavoritoController::class, 'store'])->name('favoritos.store');
+    Route::delete('/favoritos/{destino}', [FavoritoController::class, 'destroy'])->name('favoritos.destroy');
 });
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
