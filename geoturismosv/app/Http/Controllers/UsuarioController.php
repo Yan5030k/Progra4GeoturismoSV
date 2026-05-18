@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Destino;
 use App\Models\Favorito;
 use Inertia\Inertia;
 
@@ -12,13 +13,19 @@ class UsuarioController extends Controller
      */
     public function panel()
     {
-        $favoritos = Favorito::with('destino.categoria')
+        $favoritosRecientes = Favorito::with('destino.categoria')
             ->where('user_id', auth()->id())
             ->latest()
+            ->take(3)
             ->get();
 
+        $totalFavoritos = Favorito::where('user_id', auth()->id())->count();
+        $totalDestinos = Destino::where('estado', true)->count();
+
         return Inertia::render('Usuario/Panel', [
-            'favoritos' => $favoritos,
+            'favoritosRecientes' => $favoritosRecientes,
+            'totalFavoritos' => $totalFavoritos,
+            'totalDestinos' => $totalDestinos,
         ]);
     }
 }
