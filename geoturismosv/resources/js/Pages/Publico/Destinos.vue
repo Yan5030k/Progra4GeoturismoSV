@@ -1,11 +1,32 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
+import { ref, watch } from 'vue';
+import { Link, router } from '@inertiajs/vue3';
 import PublicNavbar from '@/Components/PublicNavbar.vue';
 
-defineProps({
+const props = defineProps({
     destinos: Array,
     categorias: Array,
+    filtros: Object,
 });
+
+const form = ref({
+    search: props.filtros?.search || '',
+    categoria_id: props.filtros?.categoria_id || '',
+});
+
+let timeout = null;
+
+watch(form, (value) => {
+    if (timeout) clearTimeout(timeout);
+    
+    timeout = setTimeout(() => {
+        router.get('/destinos', value, {
+            preserveState: true,
+            preserveScroll: true,
+            replace: true
+        });
+    }, 300); // 300ms debounce
+}, { deep: true });
 
 </script>
 
@@ -20,9 +41,41 @@ defineProps({
                 Explorá lugares turísticos organizados por categoría y ubicación.
             </p>
             
-             <p class="mt-2 text-gray-600">
+            <p class="mt-2 text-gray-600">
                 ¡Descubre y disfruta la aventura: El Salvador en un instante!
             </p>
+
+            <!-- Panel de Filtros -->
+            <div class="mt-6 rounded-xl bg-white p-5 shadow flex flex-col md:flex-row gap-4">
+                <div class="flex-1">
+                    <label class="block text-sm font-medium text-gray-700">Buscar</label>
+                    <input 
+                        v-model="form.search" 
+                        type="text" 
+                        placeholder="Nombre, ubicación o descripción..." 
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#168a1a] focus:ring focus:ring-[#168a1a] focus:ring-opacity-50"
+                    >
+                </div>
+                
+                <div class="flex-1 md:max-w-xs">
+                    <label class="block text-sm font-medium text-gray-700">Categoría</label>
+                    <select 
+                        v-model="form.categoria_id" 
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#168a1a] focus:ring focus:ring-[#168a1a] focus:ring-opacity-50"
+                    >
+                        <option value="">Todas las categorías</option>
+                        <option v-for="cat in categorias" :key="cat.id" :value="cat.id">
+                            {{ cat.nombre }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Loader o Mensaje vacío -->
+            <div v-if="destinos.length === 0" class="mt-12 text-center py-10 bg-white rounded-xl shadow">
+                <p class="text-gray-500 text-lg">No se encontraron destinos que coincidan con tu búsqueda.</p>
+                <button @click="form.search=''; form.categoria_id=''" class="mt-4 text-[#0b6fb3] hover:underline font-medium">Limpiar filtros</button>
+            </div>
 
             <div class="mt-8 grid gap-6 md:grid-cols-3">
                 <article

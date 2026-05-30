@@ -1,4 +1,5 @@
 <script setup>
+import { ref, onMounted } from 'vue';
 import { Link, router } from '@inertiajs/vue3';
 import PublicNavbar from '@/Components/PublicNavbar.vue';
 
@@ -6,6 +7,54 @@ const props = defineProps({
     destino: Object,
     esFavorito: Boolean,
     usuarioLogueado: Boolean,
+});
+
+const clima = ref(null);
+const cargandoClima = ref(true);
+
+const obtenerIconoClima = (codigo) => {
+    if (codigo === 0) return '☀️ Despejado';
+    if (codigo >= 1 && codigo <= 3) return '⛅ Parcialmente nublado';
+    if (codigo >= 45 && codigo <= 48) return '🌫️ Niebla';
+    if (codigo >= 51 && codigo <= 67) return '🌧️ Lluvia';
+    if (codigo >= 71 && codigo <= 77) return '❄️ Nieve';
+    if (codigo >= 80 && codigo <= 82) return '🌦️ Chubascos';
+    if (codigo >= 95) return '⛈️ Tormenta';
+    return '🌥️ Nublado';
+};
+
+onMounted(async () => {
+    try {
+        const query = encodeURIComponent(`${props.destino.nombre}, El Salvador`);
+        const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${query}&count=1&language=es&format=json`;
+        const geoRes = await fetch(geoUrl);
+        const geoData = await geoRes.json();
+        
+        let lat, lon;
+        
+        if (props.destino.latitud && props.destino.longitud) {
+            lat = props.destino.latitud;
+            lon = props.destino.longitud;
+        } else if (geoData.results && geoData.results.length > 0) {
+            lat = geoData.results[0].latitude;
+            lon = geoData.results[0].longitude;
+        } else {
+            lat = 13.6929;
+            lon = -89.2182;
+        }
+        
+        const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+        const weatherRes = await fetch(weatherUrl);
+        const weatherData = await weatherRes.json();
+        
+        if (weatherData.current_weather) {
+            clima.value = weatherData.current_weather;
+        }
+    } catch (e) {
+        console.error("Error al obtener el clima:", e);
+    } finally {
+        cargandoClima.value = false;
+    }
 });
 
 const guardarFavorito = () => {
@@ -31,11 +80,33 @@ const eliminarFavorito = () => {
             </Link>
 
             <article class="mt-6 overflow-hidden rounded-xl bg-white shadow-lg">
-                <img
-                    :src="'/' + destino.imagen"
-                    :alt="destino.nombre"
-                    class="h-96 w-full object-cover"
-                >
+                <div class="relative">
+                    <img
+                        :src="'/' + destino.imagen"
+                        :alt="destino.nombre"
+                        class="h-96 w-full object-cover"
+                    >
+
+                    <!-- Widget de Clima Flotante (Glassmorphism) -->
+                    <div class="absolute bottom-6 right-6 rounded-2xl bg-black/40 backdrop-blur-md border border-white/20 p-5 shadow-2xl transition-transform duration-300 hover:scale-105">
+                        <div v-if="cargandoClima" class="flex items-center gap-3 text-white/90 text-sm font-medium">
+                            <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Obteniendo clima...
+                        </div>
+                        <div v-else-if="clima" class="flex items-center gap-4">
+                            <div class="text-5xl drop-shadow-lg">
+                                {{ obtenerIconoClima(clima.weathercode).split(' ')[0] }}
+                            </div>
+                            <div>
+                                <p class="text-4xl font-black text-white drop-shadow-md tracking-tight">{{ clima.temperature }}°C</p>
+                                <p class="text-sm font-medium text-white/90 capitalize drop-shadow-sm">{{ obtenerIconoClima(clima.weathercode).split(' ').slice(1).join(' ') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="p-8">
                     <p class="font-semibold text-[#168a1a]">

@@ -29,18 +29,31 @@ class PublicoController extends Controller
     /**
      * Muestra todos los destinos turísticos disponibles.
      */
-    public function destinos()
+    public function destinos(Request $request)
     {
-        $destinos = Destino::with('categoria')
-            ->where('estado', true)
-            ->latest()
-            ->get();
+        $query = Destino::with('categoria')->where('estado', true);
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('nombre', 'like', "%{$search}%")
+                  ->orWhere('ubicacion', 'like', "%{$search}%")
+                  ->orWhere('descripcion', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('categoria_id')) {
+            $query->where('categoria_id', $request->input('categoria_id'));
+        }
+
+        $destinos = $query->latest()->get();
 
         $categorias = Categoria::where('estado', true)->get();
 
         return Inertia::render('Publico/Destinos', [
             'destinos' => $destinos,
             'categorias' => $categorias,
+            'filtros' => $request->only(['search', 'categoria_id'])
         ]);
     }
 
