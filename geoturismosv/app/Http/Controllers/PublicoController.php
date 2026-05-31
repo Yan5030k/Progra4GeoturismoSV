@@ -30,32 +30,68 @@ class PublicoController extends Controller
      * Muestra todos los destinos turísticos disponibles.
      */
     public function destinos(Request $request)
-    {
-        $query = Destino::with('categoria')->where('estado', true);
+{
+    $query = Destino::with('categoria')->where('estado', true);
 
-        if ($request->filled('search')) {
-            $search = $request->input('search');
-            $query->where(function ($q) use ($search) {
-                $q->where('nombre', 'like', "%{$search}%")
-                  ->orWhere('ubicacion', 'like', "%{$search}%")
-                  ->orWhere('descripcion', 'like', "%{$search}%");
-            });
-        }
+    if ($request->filled('search')) {
+        $search = $request->input('search');
 
-        if ($request->filled('categoria_id')) {
-            $query->where('categoria_id', $request->input('categoria_id'));
-        }
-
-        $destinos = $query->latest()->get();
-
-        $categorias = Categoria::where('estado', true)->get();
-
-        return Inertia::render('Publico/Destinos', [
-            'destinos' => $destinos,
-            'categorias' => $categorias,
-            'filtros' => $request->only(['search', 'categoria_id'])
-        ]);
+        $query->where(function ($q) use ($search) {
+            $q->where('nombre', 'like', "%{$search}%")
+              ->orWhere('ubicacion', 'like', "%{$search}%")
+              ->orWhere('descripcion', 'like', "%{$search}%")
+              ->orWhere('departamento', 'like', "%{$search}%")
+              ->orWhere('municipio', 'like', "%{$search}%");
+        });
     }
+
+    if ($request->filled('categoria_id')) {
+        $query->where('categoria_id', $request->input('categoria_id'));
+    }
+
+    if ($request->filled('departamento')) {
+        $query->where('departamento', $request->input('departamento'));
+    }
+
+    if ($request->filled('municipio')) {
+        $query->where('municipio', 'like', '%' . $request->input('municipio') . '%');
+    }
+
+    if ($request->filled('costo_min')) {
+        $query->where('costo_estimado', '>=', $request->input('costo_min'));
+    }
+
+    if ($request->filled('costo_max')) {
+        $query->where('costo_estimado', '<=', $request->input('costo_max'));
+    }
+
+    $destinos = $query->latest()->get();
+
+    $categorias = Categoria::where('estado', true)
+        ->orderBy('nombre')
+        ->get();
+
+    $departamentos = Destino::where('estado', true)
+        ->whereNotNull('departamento')
+        ->select('departamento')
+        ->distinct()
+        ->orderBy('departamento')
+        ->pluck('departamento');
+
+    return Inertia::render('Publico/Destinos', [
+        'destinos' => $destinos,
+        'categorias' => $categorias,
+        'departamentos' => $departamentos,
+        'filtros' => $request->only([
+            'search',
+            'categoria_id',
+            'departamento',
+            'municipio',
+            'costo_min',
+            'costo_max',
+        ]),
+    ]);
+}
 
     /**
      * Muestra el detalle de un destino turístico.
