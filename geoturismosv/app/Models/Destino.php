@@ -16,17 +16,19 @@ class Destino extends Model
         'ubicacion',
         'departamento',
         'municipio',
-        'latitud',
-        'longitud',
         'direccion',
-        'imagen',
+        'contacto',
+        'telefono',
+        'sitio_web',
         'costo_estimado',
         'dias_atencion',
         'hora_apertura',
         'hora_cierre',
-        'horario',
         'recomendaciones',
+        'imagen',
         'estado',
+        'latitud',
+        'longitud',
     ];
 
     /**
