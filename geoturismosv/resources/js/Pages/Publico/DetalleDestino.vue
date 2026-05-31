@@ -198,6 +198,44 @@ const eliminarFavorito = () => {
                             </a>
                         </div>
                     </section>
+                    
+                    <section class="mt-6">
+                        <h2 class="text-2xl font-bold text-gray-900">Información de contacto</h2>
+
+                        <div class="mt-3 grid gap-4 md:grid-cols-3">
+                            <div class="rounded-xl bg-blue-50 p-4">
+                                <strong class="text-[#0b6fb3]">Contacto</strong>
+                                <p class="mt-1 text-gray-700">
+                                    {{ destino.contacto ?? 'No especificado' }}
+                                </p>
+                            </div>
+
+                            <div class="rounded-xl bg-green-50 p-4">
+                                <strong class="text-[#168a1a]">Teléfono</strong>
+                                <p class="mt-1 text-gray-700">
+                                    {{ destino.telefono ?? 'No especificado' }}
+                                </p>
+                            </div>
+
+                            <div class="rounded-xl bg-orange-50 p-4">
+                                <strong class="text-[#f4a000]">Sitio web</strong>
+
+                                <a
+                                    v-if="destino.sitio_web"
+                                    :href="destino.sitio_web"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="mt-1 inline-block text-[#0b6fb3] hover:underline"
+                                >
+                                    Visitar sitio web
+                                </a>
+
+                                <p v-else class="mt-1 text-gray-700">
+                                    No especificado
+                                </p>
+                            </div>
+                        </div>
+                    </section>
 
                     <section class="mt-6">
                         <h2 class="text-2xl font-bold text-gray-900">Recomendaciones</h2>

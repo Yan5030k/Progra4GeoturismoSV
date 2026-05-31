@@ -8,34 +8,39 @@ use Illuminate\Database\Seeder;
 class CategoriaSeeder extends Seeder
 {
     /**
-     * Registra categorías turísticas iniciales.
+     * Categorías base para organizar los destinos turísticos.
      */
     public function run(): void
     {
         $categorias = [
             [
                 'nombre' => 'Playas',
-                'descripcion' => 'Destinos turísticos ubicados en zonas costeras de El Salvador.',
+                'descripcion' => 'Destinos costeros ideales para descanso, recreación y turismo familiar.',
                 'estado' => true,
             ],
             [
-                'nombre' => 'Montañas y Volcanes',
-                'descripcion' => 'Lugares naturales ideales para caminatas, miradores y aventura.',
+                'nombre' => 'Montañas y naturaleza',
+                'descripcion' => 'Lugares naturales, volcanes, miradores y espacios para aventura.',
                 'estado' => true,
             ],
             [
-                'nombre' => 'Pueblos Turísticos',
-                'descripcion' => 'Municipios con riqueza cultural, gastronómica e histórica.',
+                'nombre' => 'Restaurantes',
+                'descripcion' => 'Establecimientos gastronómicos recomendados para visitantes nacionales y extranjeros.',
                 'estado' => true,
             ],
             [
-                'nombre' => 'Sitios Arqueológicos',
-                'descripcion' => 'Espacios históricos que conservan parte del patrimonio prehispánico.',
+                'nombre' => 'Hoteles',
+                'descripcion' => 'Opciones de alojamiento para turistas dentro de El Salvador.',
                 'estado' => true,
             ],
             [
-                'nombre' => 'Lagos y Naturaleza',
-                'descripcion' => 'Destinos naturales para descanso, fotografía y convivencia familiar.',
+                'nombre' => 'Centros recreativos',
+                'descripcion' => 'Espacios familiares y recreativos para visitar en diferentes zonas del país.',
+                'estado' => true,
+            ],
+            [
+                'nombre' => 'Sitios culturales',
+                'descripcion' => 'Lugares históricos, arqueológicos y culturales de interés turístico.',
                 'estado' => true,
             ],
         ];
