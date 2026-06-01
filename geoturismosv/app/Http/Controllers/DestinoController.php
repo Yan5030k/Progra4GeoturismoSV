@@ -40,74 +40,88 @@ class DestinoController extends Controller
      * Guarda un nuevo destino turístico.
      */
     public function store(Request $request)
-{
-    $request->validate([
-        'categoria_id' => 'required|exists:categorias,id',
-        'nombre' => 'required|string|max:150',
-        'descripcion' => 'required|string|min:20',
-        'ubicacion' => 'required|string|max:150',
-        'direccion' => 'nullable|string|max:255',
-        'imagen' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2296',
-        'costo_estimado' => 'required|numeric|min:0',
-        'dias_atencion' => 'required|string',
-        'hora_apertura' => 'required',
-        'hora_cierre' => 'required',
-        'recomendaciones' => 'nullable|string',
-        'estado' => 'required|boolean',
-        'departamento' => 'required|string|max:100',
-        'municipio' => 'nullable|string|max:100',
-        'latitud' => 'nullable|numeric',
-        'longitud' => 'nullable|numeric',
-    ], [
-        'categoria_id.required' => 'Debe seleccionar una categoría.',
-        'categoria_id.exists' => 'La categoría seleccionada no es válida.',
-        'nombre.required' => 'El nombre del destino es obligatorio.',
-        'descripcion.required' => 'La descripción es obligatoria.',
-        'descripcion.min' => 'La descripción debe tener al menos 20 caracteres.',
-        'ubicacion.required' => 'La ubicación es obligatoria.',
-        'costo_estimado.required' => 'El costo estimado es obligatorio.',
-        'costo_estimado.numeric' => 'El costo estimado debe ser un número.',
-        'dias_atencion.required' => 'Debe seleccionar los días de atención.',
-        'hora_apertura.required' => 'Debe ingresar la hora de apertura.',
-        'hora_cierre.required' => 'Debe ingresar la hora de cierre.',
-        'estado.required' => 'Debe seleccionar un estado.',
-        'departamento.required' => 'Debe seleccionar el departamento del destino.',
-        'departamento.max' => 'El departamento no debe exceder los 100 caracteres.',
-        'municipio.max' => 'El municipio no debe exceder los 100 caracteres.',
-        'latitud.numeric' => 'La latitud debe ser un valor numérico.',
-        'longitud.numeric' => 'La longitud debe ser un valor numérico.',
-    ]);
+    {
+        $request->validate([
+            'categoria_id' => 'required|exists:categorias,id',
+            'nombre' => 'required|string|max:150',
+            'descripcion' => 'required|string|min:20',
+            'ubicacion' => 'required|string|max:150',
+            'direccion' => 'nullable|string|max:255',
 
-    $rutaImagen = null;
+            'contacto' => 'nullable|string|max:255',
+            'telefono' => 'nullable|string|max:255',
+            'sitio_web' => 'nullable|url|max:255',
 
-    if ($request->hasFile('imagen')) {
-        $rutaImagen = $request->file('imagen')->store('destinos', 'public');
-        $rutaImagen = 'storage/' . $rutaImagen;
+            'imagen' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2296',
+            'costo_estimado' => 'required|numeric|min:0',
+            'dias_atencion' => 'required|string',
+            'hora_apertura' => 'required',
+            'hora_cierre' => 'required',
+            'recomendaciones' => 'nullable|string',
+            'estado' => 'required|boolean',
+            'departamento' => 'required|string|max:100',
+            'municipio' => 'nullable|string|max:100',
+            'latitud' => 'nullable|numeric',
+            'longitud' => 'nullable|numeric',
+        ], [
+            'categoria_id.required' => 'Debe seleccionar una categoría.',
+            'categoria_id.exists' => 'La categoría seleccionada no es válida.',
+            'nombre.required' => 'El nombre del destino es obligatorio.',
+            'descripcion.required' => 'La descripción es obligatoria.',
+            'descripcion.min' => 'La descripción debe tener al menos 20 caracteres.',
+            'ubicacion.required' => 'La ubicación es obligatoria.',
+            'costo_estimado.required' => 'El costo estimado es obligatorio.',
+            'costo_estimado.numeric' => 'El costo estimado debe ser un número.',
+            'dias_atencion.required' => 'Debe seleccionar los días de atención.',
+            'hora_apertura.required' => 'Debe ingresar la hora de apertura.',
+            'hora_cierre.required' => 'Debe ingresar la hora de cierre.',
+            'estado.required' => 'Debe seleccionar un estado.',
+            'departamento.required' => 'Debe seleccionar el departamento del destino.',
+            'departamento.max' => 'El departamento no debe exceder los 100 caracteres.',
+            'municipio.max' => 'El municipio no debe exceder los 100 caracteres.',
+            'contacto.max' => 'El contacto no debe exceder los 255 caracteres.',
+            'telefono.max' => 'El teléfono no debe exceder los 255 caracteres.',
+            'sitio_web.url' => 'El sitio web debe ser una URL válida. Ejemplo: https://www.ejemplo.com',
+            'sitio_web.max' => 'El sitio web no debe exceder los 255 caracteres.',
+            'latitud.numeric' => 'La latitud debe ser un valor numérico.',
+            'longitud.numeric' => 'La longitud debe ser un valor numérico.',
+        ]);
+
+        $rutaImagen = null;
+
+        if ($request->hasFile('imagen')) {
+            $rutaImagen = $request->file('imagen')->store('destinos', 'public');
+            $rutaImagen = 'storage/' . $rutaImagen;
+        }
+
+        Destino::create([
+            'categoria_id' => $request->categoria_id,
+            'nombre' => $request->nombre,
+            'descripcion' => $request->descripcion,
+            'ubicacion' => $request->ubicacion,
+            'departamento' => $request->departamento,
+            'municipio' => $request->municipio,
+            'latitud' => $request->latitud,
+            'longitud' => $request->longitud,
+            'direccion' => $request->direccion,
+
+            'contacto' => $request->contacto,
+            'telefono' => $request->telefono,
+            'sitio_web' => $request->sitio_web,
+
+            'imagen' => $rutaImagen,
+            'costo_estimado' => $request->costo_estimado,
+            'dias_atencion' => $request->dias_atencion,
+            'hora_apertura' => $request->hora_apertura,
+            'hora_cierre' => $request->hora_cierre,
+            'recomendaciones' => $request->recomendaciones,
+            'estado' => $request->estado,
+        ]);
+
+        return redirect()
+            ->route('admin.destinos.index', [], 303)
+            ->with('success', 'Destino turístico creado correctamente.');
     }
-
-    Destino::create([
-        'categoria_id' => $request->categoria_id,
-        'nombre' => $request->nombre,
-        'descripcion' => $request->descripcion,
-        'ubicacion' => $request->ubicacion,
-        'departamento' => $request->departamento,
-        'municipio' => $request->municipio,
-        'latitud' => $request->latitud,
-        'longitud' => $request->longitud,
-        'direccion' => $request->direccion,
-        'imagen' => $rutaImagen,
-        'costo_estimado' => $request->costo_estimado,
-        'dias_atencion' => $request->dias_atencion,
-        'hora_apertura' => $request->hora_apertura,
-        'hora_cierre' => $request->hora_cierre,
-        'recomendaciones' => $request->recomendaciones,
-        'estado' => $request->estado,
-    ]);
-
-    return redirect()
-        ->route('admin.destinos.index', [], 303)
-        ->with('success', 'Destino turístico creado correctamente.');
-}
 
     /**
      * Muestra el formulario para editar un destino.
@@ -126,78 +140,92 @@ class DestinoController extends Controller
      * Actualiza un destino turístico existente.
      */
     public function update(Request $request, Destino $destino)
-{
-    $request->validate([
-        'categoria_id' => 'required|exists:categorias,id',
-        'nombre' => 'required|string|max:150',
-        'descripcion' => 'required|string|min:20',
-        'ubicacion' => 'required|string|max:150',
-        'direccion' => 'nullable|string|max:255',
-        'imagen' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2296',
-        'costo_estimado' => 'required|numeric|min:0',
-        'dias_atencion' => 'required|string',
-        'hora_apertura' => 'required',
-        'hora_cierre' => 'required',
-        'recomendaciones' => 'nullable|string',
-        'estado' => 'required|boolean',
-        'departamento' => 'required|string|max:100',
-        'municipio' => 'nullable|string|max:100',
-        'latitud' => 'nullable|numeric',
-        'longitud' => 'nullable|numeric',
-    ], [
-        'categoria_id.required' => 'Debe seleccionar una categoría.',
-        'categoria_id.exists' => 'La categoría seleccionada no es válida.',
-        'nombre.required' => 'El nombre del destino es obligatorio.',
-        'descripcion.required' => 'La descripción es obligatoria.',
-        'descripcion.min' => 'La descripción debe tener al menos 20 caracteres.',
-        'ubicacion.required' => 'La ubicación es obligatoria.',
-        'costo_estimado.required' => 'El costo estimado es obligatorio.',
-        'costo_estimado.numeric' => 'El costo estimado debe ser un número.',
-        'dias_atencion.required' => 'Debe seleccionar los días de atención.',
-        'hora_apertura.required' => 'Debe ingresar la hora de apertura.',
-        'hora_cierre.required' => 'Debe ingresar la hora de cierre.',
-        'estado.required' => 'Debe seleccionar un estado.',
-        'departamento.required' => 'Debe seleccionar el departamento del destino.',
-        'departamento.max' => 'El departamento no debe exceder los 100 caracteres.',
-        'municipio.max' => 'El municipio no debe exceder los 100 caracteres.',
-        'latitud.numeric' => 'La latitud debe ser un valor numérico.',
-        'longitud.numeric' => 'La longitud debe ser un valor numérico.',
-    ]);
+    {
+        $request->validate([
+            'categoria_id' => 'required|exists:categorias,id',
+            'nombre' => 'required|string|max:150',
+            'descripcion' => 'required|string|min:20',
+            'ubicacion' => 'required|string|max:150',
+            'direccion' => 'nullable|string|max:255',
 
-    $rutaImagen = $destino->imagen;
+            'contacto' => 'nullable|string|max:255',
+            'telefono' => 'nullable|string|max:255',
+            'sitio_web' => 'nullable|url|max:255',
 
-    if ($request->hasFile('imagen')) {
-        if ($destino->imagen && str_starts_with($destino->imagen, 'storage/')) {
-            Storage::disk('public')->delete(str_replace('storage/', '', $destino->imagen));
+            'imagen' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2296',
+            'costo_estimado' => 'required|numeric|min:0',
+            'dias_atencion' => 'required|string',
+            'hora_apertura' => 'required',
+            'hora_cierre' => 'required',
+            'recomendaciones' => 'nullable|string',
+            'estado' => 'required|boolean',
+            'departamento' => 'required|string|max:100',
+            'municipio' => 'nullable|string|max:100',
+            'latitud' => 'nullable|numeric',
+            'longitud' => 'nullable|numeric',
+        ], [
+            'categoria_id.required' => 'Debe seleccionar una categoría.',
+            'categoria_id.exists' => 'La categoría seleccionada no es válida.',
+            'nombre.required' => 'El nombre del destino es obligatorio.',
+            'descripcion.required' => 'La descripción es obligatoria.',
+            'descripcion.min' => 'La descripción debe tener al menos 20 caracteres.',
+            'ubicacion.required' => 'La ubicación es obligatoria.',
+            'costo_estimado.required' => 'El costo estimado es obligatorio.',
+            'costo_estimado.numeric' => 'El costo estimado debe ser un número.',
+            'dias_atencion.required' => 'Debe seleccionar los días de atención.',
+            'hora_apertura.required' => 'Debe ingresar la hora de apertura.',
+            'hora_cierre.required' => 'Debe ingresar la hora de cierre.',
+            'estado.required' => 'Debe seleccionar un estado.',
+            'departamento.required' => 'Debe seleccionar el departamento del destino.',
+            'departamento.max' => 'El departamento no debe exceder los 100 caracteres.',
+            'municipio.max' => 'El municipio no debe exceder los 100 caracteres.',
+            'contacto.max' => 'El contacto no debe exceder los 255 caracteres.',
+            'telefono.max' => 'El teléfono no debe exceder los 255 caracteres.',
+            'sitio_web.url' => 'El sitio web debe ser una URL válida. Ejemplo: https://www.ejemplo.com',
+            'sitio_web.max' => 'El sitio web no debe exceder los 255 caracteres.',
+            'latitud.numeric' => 'La latitud debe ser un valor numérico.',
+            'longitud.numeric' => 'La longitud debe ser un valor numérico.',
+        ]);
+
+        $rutaImagen = $destino->imagen;
+
+        if ($request->hasFile('imagen')) {
+            if ($destino->imagen && str_starts_with($destino->imagen, 'storage/')) {
+                Storage::disk('public')->delete(str_replace('storage/', '', $destino->imagen));
+            }
+
+            $rutaImagen = $request->file('imagen')->store('destinos', 'public');
+            $rutaImagen = 'storage/' . $rutaImagen;
         }
 
-        $rutaImagen = $request->file('imagen')->store('destinos', 'public');
-        $rutaImagen = 'storage/' . $rutaImagen;
+        $destino->update([
+            'categoria_id' => $request->categoria_id,
+            'nombre' => $request->nombre,
+            'descripcion' => $request->descripcion,
+            'ubicacion' => $request->ubicacion,
+            'departamento' => $request->departamento,
+            'municipio' => $request->municipio,
+            'latitud' => $request->latitud,
+            'longitud' => $request->longitud,
+            'direccion' => $request->direccion,
+
+            'contacto' => $request->contacto,
+            'telefono' => $request->telefono,
+            'sitio_web' => $request->sitio_web,
+
+            'imagen' => $rutaImagen,
+            'costo_estimado' => $request->costo_estimado,
+            'dias_atencion' => $request->dias_atencion,
+            'hora_apertura' => $request->hora_apertura,
+            'hora_cierre' => $request->hora_cierre,
+            'recomendaciones' => $request->recomendaciones,
+            'estado' => $request->estado,
+        ]);
+
+        return redirect()
+            ->route('admin.destinos.index', [], 303)
+            ->with('success', 'Destino turístico actualizado correctamente.');
     }
-
-    $destino->update([
-        'categoria_id' => $request->categoria_id,
-        'nombre' => $request->nombre,
-        'descripcion' => $request->descripcion,
-        'ubicacion' => $request->ubicacion,
-        'departamento' => $request->departamento,
-        'municipio' => $request->municipio,
-        'latitud' => $request->latitud,
-        'longitud' => $request->longitud,
-        'direccion' => $request->direccion,
-        'imagen' => $rutaImagen,
-        'costo_estimado' => $request->costo_estimado,
-        'dias_atencion' => $request->dias_atencion,
-        'hora_apertura' => $request->hora_apertura,
-        'hora_cierre' => $request->hora_cierre,
-        'recomendaciones' => $request->recomendaciones,
-        'estado' => $request->estado,
-    ]);
-
-    return redirect()
-        ->route('admin.destinos.index', [], 303)
-        ->with('success', 'Destino turístico actualizado correctamente.');
-}
 
     /**
      * Elimina un destino turístico.

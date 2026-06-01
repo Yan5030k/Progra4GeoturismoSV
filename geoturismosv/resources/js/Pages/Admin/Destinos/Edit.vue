@@ -209,7 +209,7 @@ const actualizarDestino = () => {
                             v-model="form.contacto"
                             type="text"
                             class="mt-2 w-full rounded-lg border-gray-300 shadow-sm focus:border-[#0b6fb3] focus:ring-[#0b6fb3]"
-                            placeholder="Ejemplo: Recepción, administración o información turística"
+                            placeholder="Ejemplo: Recepción o información turística"
                         >
                         <p v-if="form.errors.contacto" class="mt-2 text-sm text-red-600">
                             {{ form.errors.contacto }}
@@ -241,7 +241,7 @@ const actualizarDestino = () => {
                             {{ form.errors.sitio_web }}
                         </p>
                     </div>
-                
+
                     <div>
                         <label class="block font-semibold text-gray-700">Imagen actual</label>
 
