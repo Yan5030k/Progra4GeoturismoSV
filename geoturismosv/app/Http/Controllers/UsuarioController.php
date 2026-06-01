@@ -20,6 +20,7 @@ class UsuarioController extends Controller
             ->get();
 
         $totalFavoritos = Favorito::where('user_id', auth()->id())->count();
+
         $totalDestinos = Destino::where('estado', true)->count();
 
         return Inertia::render('Usuario/Panel', [

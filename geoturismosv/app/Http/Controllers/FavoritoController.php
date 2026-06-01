@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Favorito;
 use App\Models\Destino;
-use Illuminate\Http\Request;
+use App\Models\Favorito;
 use Inertia\Inertia;
 
 class FavoritoController extends Controller
