@@ -16,6 +16,9 @@ const form = useForm({
     latitud: '',
     longitud: '',
     direccion: '',
+    contacto: '',
+    telefono: '',
+    sitio_web: '',
     imagen: null,
     costo_estimado: 0,
     dias_atencion: 'Todos los días',
@@ -200,6 +203,44 @@ const guardarDestino = () => {
                         >
                     </div>
 
+                    <div>
+    <label class="block font-semibold text-gray-700">Contacto</label>
+    <input
+        v-model="form.contacto"
+        type="text"
+        class="mt-2 w-full rounded-lg border-gray-300 shadow-sm focus:border-[#0b6fb3] focus:ring-[#0b6fb3]"
+        placeholder="Ejemplo: Recepción, administración o información turística"
+    >
+    <p v-if="form.errors.contacto" class="mt-2 text-sm text-red-600">
+        {{ form.errors.contacto }}
+    </p>
+  </div>
+
+   <div>
+    <label class="block font-semibold text-gray-700">Teléfono</label>
+    <input
+        v-model="form.telefono"
+        type="text"
+        class="mt-2 w-full rounded-lg border-gray-300 shadow-sm focus:border-[#0b6fb3] focus:ring-[#0b6fb3]"
+        placeholder="Ejemplo: 2600-0000"
+    >
+    <p v-if="form.errors.telefono" class="mt-2 text-sm text-red-600">
+        {{ form.errors.telefono }}
+    </p>
+  </div>
+
+  <div>
+    <label class="block font-semibold text-gray-700">Sitio web</label>
+    <input
+        v-model="form.sitio_web"
+        type="url"
+        class="mt-2 w-full rounded-lg border-gray-300 shadow-sm focus:border-[#0b6fb3] focus:ring-[#0b6fb3]"
+        placeholder="https://www.ejemplo.com"
+    >
+    <p v-if="form.errors.sitio_web" class="mt-2 text-sm text-red-600">
+        {{ form.errors.sitio_web }}
+    </p>
+  </div>
                     <div>
                         <label class="block font-semibold text-gray-700">Imagen</label>
                         <input

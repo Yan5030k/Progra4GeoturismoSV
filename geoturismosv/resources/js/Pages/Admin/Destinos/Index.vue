@@ -69,6 +69,10 @@ const eliminarDestino = (id) => {
                             {{ destino.hora_apertura }} - {{ destino.hora_cierre }}
                         </p>
 
+                        <p class="mt-2 text-sm text-gray-600">
+                        Teléfono: {{ destino.telefono ?? 'No especificado' }}
+                        </p>
+                        
                         <p class="mt-3 line-clamp-3 text-gray-700">
                             {{ destino.descripcion }}
                         </p>
