@@ -1,8 +1,16 @@
 <script setup>
 import { computed, ref, onMounted } from 'vue';
 import { Link, usePage, router } from '@inertiajs/vue3';
+import { useI18n } from 'vue-i18n';
 
 const page = usePage();
+const { locale } = useI18n();
+
+const toggleLocale = () => {
+    const newLocale = locale.value === 'es' ? 'en' : 'es';
+    locale.value = newLocale;
+    localStorage.setItem('locale', newLocale);
+};
 
 const isDark = ref(false);
 
@@ -57,6 +65,14 @@ const toggleTheme = () => {
 
             <div class="flex items-center gap-3">
                 <button
+                    @click="toggleLocale"
+                    class="font-bold px-2 py-1 rounded-md text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 transition-colors"
+                    title="Cambiar idioma"
+                >
+                    {{ locale.toUpperCase() }}
+                </button>
+
+                <button
                     @click="toggleTheme"
                     class="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 transition-colors"
                     title="Alternar tema"
@@ -73,28 +89,28 @@ const toggleTheme = () => {
                     href="/"
                     class="rounded-full border border-[#0b6fb3] bg-blue-50 dark:bg-blue-900/20 px-4 py-2 font-medium text-[#0b6fb3] dark:text-blue-400 transition hover:bg-[#0b6fb3] hover:text-white dark:hover:bg-[#0b6fb3] dark:hover:text-white"
                 >
-                    Inicio
+                    {{ $t('nav.home') }}
                 </Link>
 
                 <Link
                     href="/destinos"
                     class="rounded-full border border-[#0b6fb3] bg-blue-50 dark:bg-blue-900/20 px-4 py-2 font-medium text-[#0b6fb3] dark:text-blue-400 transition hover:bg-[#0b6fb3] hover:text-white dark:hover:bg-[#0b6fb3] dark:hover:text-white"
                 >
-                    Destinos
+                    {{ $t('nav.destinations') }}
                 </Link>
 
                 <Link
                     href="/categorias"
                     class="rounded-full border border-[#0b6fb3] bg-blue-50 dark:bg-blue-900/20 px-4 py-2 font-medium text-[#0b6fb3] dark:text-blue-400 transition hover:bg-[#0b6fb3] hover:text-white dark:hover:bg-[#0b6fb3] dark:hover:text-white"
                 >
-                    Categorías
+                    {{ $t('nav.categories') }}
                 </Link>
 
                 <Link
                     href="/sobre-nosotros"
                     class="rounded-full border border-[#0b6fb3] bg-blue-50 dark:bg-blue-900/20 px-4 py-2 font-medium text-[#0b6fb3] dark:text-blue-400 transition hover:bg-[#0b6fb3] hover:text-white dark:hover:bg-[#0b6fb3] dark:hover:text-white"
                 >
-                    Sobre nosotros
+                    {{ $t('nav.about') }}
                 </Link>
 
                 <Link
@@ -102,7 +118,7 @@ const toggleTheme = () => {
                     href="/login"
                     class="rounded-full bg-[#f4a000] px-5 py-2 font-semibold text-white shadow transition hover:bg-orange-500"
                 >
-                    Iniciar sesión
+                    {{ $t('nav.login') }}
                 </Link>
 
                 <template v-else>
@@ -110,7 +126,7 @@ const toggleTheme = () => {
                         :href="rutaPanel"
                         class="rounded-full bg-[#168a1a] px-5 py-2 font-semibold text-white shadow transition hover:bg-green-700"
                     >
-                        Mi panel
+                        {{ $t('nav.panel') }}
                     </Link>
 
                     <Link
@@ -118,7 +134,7 @@ const toggleTheme = () => {
                         href="/favoritos"
                         class="rounded-full bg-[#0b6fb3] px-5 py-2 font-semibold text-white shadow transition hover:bg-blue-700"
                     >
-                        Mis favoritos
+                        {{ $t('nav.favorites') }}
                     </Link>
 
                     <button
@@ -126,7 +142,7 @@ const toggleTheme = () => {
                         @click="cerrarSesion"
                         class="rounded-full bg-red-600 px-5 py-2 font-semibold text-white shadow transition hover:bg-red-700"
                     >
-                        Cerrar sesión
+                        {{ $t('nav.logout') }}
                     </button>
                 </template>
             </div>

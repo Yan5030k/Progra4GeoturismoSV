@@ -1,5 +1,8 @@
 <script setup>
 import PublicNavbar from '@/Components/PublicNavbar.vue';
+import { useDbTranslation } from '@/Composables/useDbTranslation';
+
+const { tDb } = useDbTranslation();
 
 defineProps({
     categorias: Array,
@@ -21,12 +24,12 @@ defineProps({
             
             <div class="relative z-10 mx-auto max-w-7xl px-6 text-center lg:px-8">
                 <div class="mx-auto max-w-2xl">
-                    <h2 class="text-sm font-bold leading-7 text-[#0b6fb3] uppercase tracking-widest">Explora El Salvador</h2>
+                    <h2 class="text-sm font-bold leading-7 text-[#0b6fb3] uppercase tracking-widest">{{ $t('categories.explore') }}</h2>
                     <h1 class="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
-                        Categorías <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#0b6fb3] to-[#168a1a]">Turísticas</span>
+                        {{ $t('categories.title1') }} <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#0b6fb3] to-[#168a1a]">{{ $t('categories.title2') }}</span>
                     </h1>
                     <p class="mt-6 text-lg leading-8 text-gray-600">
-                        Descubre la riqueza y diversidad de nuestros destinos. Están organizados por tipo de experiencia turística para ayudarte a encontrar tu próxima aventura.
+                        {{ $t('categories.desc') }}
                     </p>
                 </div>
             </div>
@@ -52,22 +55,22 @@ defineProps({
                         </div>
                         
                         <h2 class="text-xl font-bold tracking-tight text-gray-900 group-hover:text-[#0b6fb3] transition-colors duration-300">
-                            {{ categoria.nombre }}
+                            {{ tDb(categoria, 'nombre') }}
                         </h2>
                         
                         <p class="mt-4 text-base leading-relaxed text-gray-600 flex-1">
-                            {{ categoria.descripcion }}
+                            {{ tDb(categoria, 'descripcion') }}
                         </p>
                     </div>
 
                     <div class="relative border-t border-gray-100 bg-gray-50/50 px-8 py-4 transition-colors duration-300 group-hover:bg-blue-50/50 flex items-center justify-between">
                         <span class="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-xs font-semibold text-[#168a1a] shadow-sm ring-1 ring-inset ring-gray-200 transition-colors duration-300 group-hover:ring-[#168a1a]/30">
                             <span class="h-1.5 w-1.5 rounded-full bg-[#168a1a]"></span>
-                            {{ categoria.destinos_count }} destinos
+                            {{ categoria.destinos_count }} {{ $t('categories.destinations') }}
                         </span>
                         
                         <span class="text-sm font-medium text-[#0b6fb3] flex items-center gap-1 group-hover:translate-x-1 transition-transform duration-300 cursor-pointer">
-                            Explorar
+                            {{ $t('categories.explore_btn') }}
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
                                 <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" />
                             </svg>
@@ -81,8 +84,8 @@ defineProps({
                 <svg class="mx-auto h-12 w-12 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                 </svg>
-                <h3 class="mt-2 text-sm font-medium text-gray-900">No hay categorías</h3>
-                <p class="mt-1 text-sm text-gray-500">Aún no se han registrado categorías turísticas en la plataforma.</p>
+                <h3 class="mt-2 text-sm font-medium text-gray-900">{{ $t('categories.no_categories') }}</h3>
+                <p class="mt-1 text-sm text-gray-500">{{ $t('categories.no_categories_desc') }}</p>
             </div>
         </main>
     </div>

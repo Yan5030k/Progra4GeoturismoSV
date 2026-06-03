@@ -14,10 +14,10 @@ import PublicNavbar from '@/Components/PublicNavbar.vue';
             </div>
             <div class="relative mx-auto max-w-5xl px-6 text-center">
                 <h1 class="text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl drop-shadow-lg">
-                    Sobre GeoTurismoSV
+                    {{ $t('about.title') }}
                 </h1>
                 <p class="mt-4 text-lg text-gray-200 sm:text-xl font-medium drop-shadow-md">
-                    Descubre la iniciativa detrás de nuestra plataforma
+                    {{ $t('about.subtitle') }}
                 </p>
             </div>
         </section>
@@ -31,15 +31,15 @@ import PublicNavbar from '@/Components/PublicNavbar.vue';
                 <div class="p-8 sm:p-12">
                     <div class="space-y-6 text-lg leading-relaxed text-gray-700">
                         <p>
-                            <strong class="font-bold text-gray-900">GeoTurismoSV</strong> nace de la pasión por nuestra tierra. Somos una iniciativa salvadoreña dedicada a mostrar la auténtica belleza, los paisajes y la riqueza cultural de El Salvador.
+                            <strong class="font-bold text-gray-900">GeoTurismoSV</strong> {{ $t('about.p1') }}
                         </p>
 
                         <p>
-                            Creemos que planear tu viaje no debería ser complicado. Por eso, hemos creado una plataforma que resuelve el problema de la información turística dispersa: centralizamos los mejores destinos, rincones mágicos y recomendaciones en un sistema ordenado, accesible e intuitivo.
+                            {{ $t('about.p2') }}
                         </p>
 
                         <p>
-                            Nuestra misión es simple: ser la brújula que te inspire y te guíe hacia tu próxima gran aventura dentro del "Pulgarcito de América", ayudándote a descubrir los destinos, la cultura y las experiencias únicas que hacen de El Salvador un lugar inolvidable.
+                            {{ $t('about.p3') }}
                         </p>
                     </div>
                 </div>

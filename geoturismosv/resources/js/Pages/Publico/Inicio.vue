@@ -1,6 +1,9 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
 import PublicNavbar from '@/Components/PublicNavbar.vue';
+import { useDbTranslation } from '@/Composables/useDbTranslation';
+
+const { tDb } = useDbTranslation();
 
 defineProps({
     destinos: Array,
@@ -18,23 +21,23 @@ defineProps({
                 </div>
                 <div class="relative mx-auto max-w-7xl px-6 text-center lg:text-left">
                     <h2 class="mb-4 text-5xl font-black tracking-tight text-white sm:text-6xl lg:text-7xl">
-                        Donde cada lugar <br class="hidden lg:block"/>
+                        {{ $t('home.hero1') }} <br class="hidden lg:block"/>
                         <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#168a1a] to-green-400">
-                            cuenta una historia
+                            {{ $t('home.hero2') }}
                         </span>
                     </h2>
                     <p class="mx-auto lg:mx-0 max-w-2xl text-lg text-gray-300 sm:text-xl leading-relaxed">
-                        <strong class="font-semibold text-white">Descubrí El Salvador de una forma diferente.</strong> 
-                        GeoTurismoSV centraliza destinos turísticos, recomendaciones y categorías para ayudarte a elegir tu próxima experiencia.
+                        <strong class="font-semibold text-white">{{ $t('home.subtitle_strong') }}</strong> 
+                        {{ $t('home.subtitle') }}
                     </p>
 
                     <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                         <Link href="/destinos" class="rounded-full bg-gradient-to-r from-[#168a1a] to-green-500 px-8 py-4 font-bold text-white shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-green-500/30">
-                            Explorar destinos
+                            {{ $t('home.explore') }}
                         </Link>
 
                         <Link href="/register" class="rounded-full border-2 border-white/80 bg-white/10 px-8 py-4 font-bold text-white backdrop-blur-sm transition-all duration-300 hover:bg-white hover:text-gray-900">
-                            Crear cuenta
+                            {{ $t('home.register') }}
                         </Link>
                     </div>
                 </div>
@@ -43,7 +46,7 @@ defineProps({
             <section class="py-12">
                 <div class="mx-auto max-w-7xl px-6">
                     <h3 class="mb-6 text-2xl font-bold text-gray-900 dark:text-white">
-                        Destinos destacados
+                        {{ $t('home.featured') }}
                     </h3>
 
                     <div class="grid gap-6 md:grid-cols-3">
@@ -62,22 +65,22 @@ defineProps({
 
                             <div class="p-6">
                                 <span class="inline-block rounded-full bg-green-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#168a1a]">
-                                    {{ destino.categoria?.nombre }}
+                                    {{ tDb(destino.categoria, 'nombre') }}
                                 </span>
                                 <h4 class="mt-3 text-2xl font-bold text-gray-900 dark:text-white group-hover:text-[#0b6fb3] dark:group-hover:text-[#3da0e6] transition-colors">
-                                    {{ destino.nombre }}
+                                    {{ tDb(destino, 'nombre') }}
                                 </h4>
                                 <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
                                     </svg>
-                                    {{ destino.ubicacion }}
+                                    {{ tDb(destino, 'ubicacion') }}
                                 </p>
                                 <Link
                                     :href="`/destinos/${destino.id}`"
                                     class="mt-5 inline-flex items-center font-semibold text-[#0b6fb3] dark:text-[#3da0e6] hover:underline"
                                 >
-                                    Ver detalle
+                                    {{ $t('home.view_details') }}
                                     <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                     </svg>
@@ -91,7 +94,7 @@ defineProps({
 
         <footer class="bg-gray-900 dark:bg-black py-8 text-center text-gray-400">
             <div class="mx-auto max-w-7xl px-6">
-                <p>&copy; 2026 GeoTurismoSV. Todos los derechos reservados.</p>
+                <p>{{ $t('home.footer') }}</p>
             </div>
         </footer>
     </div>
