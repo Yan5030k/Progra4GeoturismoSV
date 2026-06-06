@@ -1,10 +1,12 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { Link, router } from '@inertiajs/vue3';
 import PublicNavbar from '@/Components/PublicNavbar.vue';
 import { useDbTranslation } from '@/Composables/useDbTranslation';
+import { useI18n } from 'vue-i18n';
 
 const { tDb } = useDbTranslation();
+const { locale } = useI18n();
 
 const props = defineProps({
     destino: Object,
@@ -14,6 +16,11 @@ const props = defineProps({
 
 const clima = ref(null);
 const cargandoClima = ref(true);
+
+// TTS State
+const estaReproduciendo = ref(false);
+let synth = null;
+let utterance = null;
 
 const obtenerIconoClima = (codigo) => {
     if (codigo === 0) return '☀️ Despejado';
@@ -27,6 +34,13 @@ const obtenerIconoClima = (codigo) => {
 };
 
 onMounted(async () => {
+    // Initialize Speech Synthesis
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        synth = window.speechSynthesis;
+        // Trigger loading of voices
+        synth.getVoices();
+    }
+
     try {
         const query = encodeURIComponent(`${props.destino.nombre}, El Salvador`);
         const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${query}&count=1&language=es&format=json`;
@@ -71,6 +85,64 @@ const eliminarFavorito = () => {
         preserveScroll: true,
     });
 };
+
+const alternarReproduccion = () => {
+    if (!synth) return;
+
+    if (estaReproduciendo.value) {
+        synth.cancel();
+        estaReproduciendo.value = false;
+        return;
+    }
+
+    let texto = tDb(props.destino, 'descripcion');
+    if (!texto) return;
+
+    const depto = props.destino.departamento;
+    const muni = props.destino.municipio;
+    
+    if (depto || muni) {
+        let locationText = '';
+        if (locale.value === 'en') {
+            if (depto && muni) locationText = ` It is located in the department of ${depto}, municipality of ${muni}.`;
+            else if (depto) locationText = ` It is located in the department of ${depto}.`;
+            else if (muni) locationText = ` It is located in the municipality of ${muni}.`;
+        } else {
+            if (depto && muni) locationText = ` Se encuentra ubicado en el departamento de ${depto}, municipio de ${muni}.`;
+            else if (depto) locationText = ` Se encuentra ubicado en el departamento de ${depto}.`;
+            else if (muni) locationText = ` Se encuentra ubicado en el municipio de ${muni}.`;
+        }
+        texto += locationText;
+    }
+
+    // Use vue-i18n locale instead of document.lang
+    const currentLang = locale.value === 'en' ? 'en-US' : 'es-ES';
+    
+    utterance = new SpeechSynthesisUtterance(texto);
+    utterance.lang = currentLang;
+    utterance.rate = 0.95; 
+
+    // Try to explicitly pick a voice that matches the language
+    const voices = synth.getVoices();
+    if (voices.length > 0) {
+        const preferredVoice = voices.find(v => v.lang.startsWith(locale.value));
+        if (preferredVoice) {
+            utterance.voice = preferredVoice;
+        }
+    }
+
+    utterance.onend = () => { estaReproduciendo.value = false; };
+    utterance.onerror = () => { estaReproduciendo.value = false; };
+
+    estaReproduciendo.value = true;
+    synth.speak(utterance);
+};
+
+onUnmounted(() => {
+    if (synth && estaReproduciendo.value) {
+        synth.cancel();
+    }
+});
 </script>
 
 <template>
@@ -155,8 +227,24 @@ const eliminarFavorito = () => {
                     </div>
 
                     <section class="mt-8">
-                        <h2 class="text-2xl font-bold text-gray-900">{{ $t('detail.description') }}</h2>
-                        <p class="mt-2 leading-relaxed text-gray-700 whitespace-pre-wrap">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-2xl font-bold text-gray-900">{{ $t('detail.description') }}</h2>
+                            
+                            <button 
+                                @click="alternarReproduccion"
+                                class="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors shadow-sm"
+                                :class="estaReproduciendo ? 'bg-red-100 text-red-700 hover:bg-red-200' : 'bg-[#e7f3eb] text-[#168a1a] hover:bg-[#d4ecd9]'"
+                            >
+                                <svg v-if="!estaReproduciendo" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                  <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd" />
+                                </svg>
+                                <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 animate-pulse" viewBox="0 0 20 20" fill="currentColor">
+                                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1V8a1 1 0 00-1-1H8z" clip-rule="evenodd" />
+                                </svg>
+                                {{ estaReproduciendo ? $t('detail.stop_listening', 'Detener') : $t('detail.listen', 'Escuchar') }}
+                            </button>
+                        </div>
+                        <p class="mt-4 leading-relaxed text-gray-700 whitespace-pre-wrap">
                             {{ tDb(destino, 'descripcion') }}
                         </p>
                     </section>
