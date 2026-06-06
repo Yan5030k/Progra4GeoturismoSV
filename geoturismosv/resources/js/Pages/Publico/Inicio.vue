@@ -2,11 +2,64 @@
 import { Link } from '@inertiajs/vue3';
 import PublicNavbar from '@/Components/PublicNavbar.vue';
 import { useDbTranslation } from '@/Composables/useDbTranslation';
+import { onMounted, ref } from 'vue';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
 
 const { tDb } = useDbTranslation();
 
-defineProps({
+const props = defineProps({
     destinos: Array,
+    todosLosDestinos: Array,
+});
+
+const map = ref(null);
+
+onMounted(() => {
+    if (typeof window !== 'undefined') {
+        map.value = L.map('map').setView([13.6929, -88.8181], 8);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map.value);
+
+        props.todosLosDestinos.forEach(destino => {
+            if (destino.latitud && destino.longitud) {
+                const lat = parseFloat(destino.latitud);
+                const lng = parseFloat(destino.longitud);
+
+                if (!isNaN(lat) && !isNaN(lng)) {
+                    // Custom icon to ensure it works well in Vite
+                    const icon = L.icon({
+                        iconUrl: '/images/marker-icon.png',
+                        shadowUrl: '/images/marker-shadow.png',
+                        iconSize: [25, 41],
+                        iconAnchor: [12, 41],
+                        popupAnchor: [1, -34],
+                        shadowSize: [41, 41]
+                    });
+
+                    // We will just use default for now, but sometimes Vite breaks Leaflet image paths.
+                    // If markers don't show, we'll fix it later. We'll try default first.
+                    
+                    const marker = L.marker([lat, lng]).addTo(map.value);
+                    
+                    const imageUrl = '/' + (destino.imagen || 'images/placeholder.jpg');
+                    const title = tDb(destino, 'nombre');
+                    const popupContent = `
+                        <div class="text-center p-2 min-w-[200px]">
+                            <img src="${imageUrl}" alt="${title}" class="w-full h-32 object-cover rounded-lg mb-2">
+                            <h4 class="font-bold text-gray-900 text-lg mb-2">${title}</h4>
+                            <a href="/destinos/${destino.id}" class="inline-block bg-[#168a1a] text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-green-700 transition-colors" style="text-decoration:none;">
+                                Ver Detalles
+                            </a>
+                        </div>
+                    `;
+                    marker.bindPopup(popupContent);
+                }
+            }
+        });
+    }
 });
 </script>
 
@@ -88,6 +141,19 @@ defineProps({
                             </div>
                         </article>
                     </div>
+                </div>
+            </section>
+
+            <!-- Global Map Section -->
+            <section class="py-12 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+                <div class="mx-auto max-w-7xl px-6">
+                    <h3 class="mb-6 text-2xl font-bold text-gray-900 dark:text-white text-center">
+                        Explora El Salvador en el Mapa
+                    </h3>
+                    <p class="text-center text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+                        Descubre todos nuestros increíbles destinos turísticos ubicados a lo largo y ancho del país. Haz clic en un marcador para ver más detalles.
+                    </p>
+                    <div id="map" class="h-[600px] w-full rounded-2xl shadow-2xl z-0 relative border-4 border-white dark:border-gray-700"></div>
                 </div>
             </section>
         </main>

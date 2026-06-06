@@ -21,8 +21,13 @@ class PublicoController extends Controller
             ->take(3)
             ->get();
 
+        $todosLosDestinos = Destino::with('categoria')
+            ->where('estado', true)
+            ->get(['id', 'nombre', 'nombre_en', 'latitud', 'longitud', 'imagen', 'categoria_id']);
+
         return Inertia::render('Publico/Inicio', [
             'destinos' => $destinos,
+            'todosLosDestinos' => $todosLosDestinos,
         ]);
     }
 
