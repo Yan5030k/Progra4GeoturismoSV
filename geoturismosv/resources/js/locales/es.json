@@ -7,7 +7,8 @@
     "login": "Iniciar sesión",
     "panel": "Mi panel",
     "favorites": "Mis favoritos",
-    "logout": "Cerrar sesión"
+    "logout": "Cerrar sesión",
+    "register": "Crear cuenta"
   },
   "about": {
     "title": "Sobre GeoTurismoSV",
@@ -44,7 +45,11 @@
     "max_cost": "Costo máximo",
     "cost_ph_25": "Ej. 25",
     "clear_filters": "Limpiar filtros",
-    "no_results": "No se encontraron destinos que coincidan con tu búsqueda."
+    "no_results": "No se encontraron destinos que coincidan con tu búsqueda.",
+    "show_currency": "Convertir a (Opcional)",
+    "price_range": "Filtrar por Rango de Precio",
+    "your_currency": "Tu Moneda:",
+    "convert_to": "Convertir a (Opcional)"
   },
   "categories": {
     "explore": "Explora El Salvador",
