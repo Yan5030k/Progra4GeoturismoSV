@@ -1,5 +1,15 @@
 # GeoTurismoSV
 
+GeoTurismoSV es una plataforma web dedicada a promover los destinos turísticos y atractivos naturales de El Salvador. Permite a los usuarios explorar, conocer y obtener información relevante sobre diversos lugares turísticos del país.
+
+## Integrantes del Grupo
+
+- Marielena Velasques Escobar - SMSS018024
+- Alejandra María Baires Campos - SMSS038924
+- Brayan Isaac Carranza Amaya - SMSS023824
+- Ariel Esau Yanes Quintanilla - SMSS008924
+- Jhoan Mauricio Ortega Ventura - SMSS003224
+
 ## Credenciales de prueba
 
 ### Administrador
