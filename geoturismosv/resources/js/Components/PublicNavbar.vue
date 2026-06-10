@@ -113,13 +113,20 @@ const toggleTheme = () => {
                     {{ $t('nav.about') }}
                 </Link>
 
-                <Link
-                    v-if="!usuario"
-                    href="/login"
-                    class="rounded-full bg-[#f4a000] px-5 py-2 font-semibold text-white shadow transition hover:bg-orange-500"
-                >
-                    {{ $t('nav.login') }}
-                </Link>
+                <div v-if="!usuario" class="flex gap-2">
+                    <Link
+                        href="/login"
+                        class="rounded-full border border-[#f4a000] text-[#f4a000] px-5 py-2 font-semibold shadow-sm transition hover:bg-[#f4a000] hover:text-white"
+                    >
+                        {{ $t('nav.login') }}
+                    </Link>
+                    <Link
+                        href="/register"
+                        class="rounded-full bg-[#168a1a] px-5 py-2 font-semibold text-white shadow transition hover:bg-green-700"
+                    >
+                        {{ $t('nav.register') }}
+                    </Link>
+                </div>
 
                 <template v-else>
                     <Link

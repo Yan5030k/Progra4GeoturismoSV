@@ -1,5 +1,41 @@
 # GeoTurismoSV
 
+GeoTurismoSV es una plataforma web dedicada a promover los destinos turísticos y atractivos naturales de El Salvador. Permite a los usuarios explorar, conocer y obtener información relevante sobre diversos lugares turísticos del país.
+
+## Integrantes del Grupo
+
+- Marielena Velasques Escobar - SMSS018024
+- Alejandra María Baires Campos - SMSS038924
+- Brayan Isaac Carranza Amaya - SMSS023824
+- Ariel Esau Yanes Quintanilla - SMSS008924
+- Jhoan Mauricio Ortega Ventura - SMSS003224
+
+## Módulos del Sistema
+
+El sistema está dividido en 3 módulos principales según el nivel de acceso:
+
+### 1. Módulo Público (Sin iniciar sesión)
+Cualquier persona que visite la plataforma puede:
+- Navegar por la página de inicio para conocer sobre el proyecto.
+- Explorar el catálogo público de destinos turísticos.
+- Ver los detalles de cada destino (descripción, ubicación, horarios, precios e imágenes).
+- Filtrar destinos por categorías.
+- Conocer más sobre el equipo en la página de "Sobre Nosotros".
+
+### 2. Módulo de Usuario (Sesión iniciada)
+Los usuarios que se registran e inician sesión en la plataforma tienen acceso a las funciones públicas y además pueden:
+- Acceder a un panel de control personal.
+- Agregar destinos turísticos a su lista de favoritos para tenerlos guardados.
+- Ver, administrar y eliminar los destinos de su lista de favoritos.
+- Navegar la plataforma de forma personalizada.
+
+### 3. Módulo de Administrador
+El administrador tiene control total sobre el contenido de la plataforma. Desde su panel administrativo exclusivo puede:
+- **Gestión de Categorías:** Crear, leer, actualizar y eliminar (CRUD) categorías de turismo.
+- **Gestión de Destinos:** Crear, editar y eliminar destinos turísticos, estableciendo sus descripciones, ubicaciones detalladas, horarios de atención y costos.
+- **Gestión de Imágenes:** Subir y administrar las fotografías asociadas a cada destino turístico.
+- **Gestión de Usuarios:** Visualizar el listado de usuarios registrados en el sistema.
+
 ## Credenciales de prueba
 
 ### Administrador
@@ -111,7 +147,7 @@ El administrador puede gestionar la información del sistema desde un panel admi
 
 El usuario normal puede navegar por la plataforma, consultar destinos turísticos, ver información detallada y guardar destinos en su lista de favoritos.
 
-Funciones implementadas en este avance
+Funciones principales del sistema
 Página de inicio.
 Página pública de destinos.
 Página de detalle de destino.
@@ -161,7 +197,6 @@ password_reset_tokens
 
 Estas tablas forman parte del funcionamiento técnico del framework.
 
-Estado del README
+Estado del Proyecto
 
-Este README es una versión básica para el segundo avance del proyecto.
-La documentación final será ampliada posteriormente con más detalles técnicos, capturas, estructura completa del sistema y explicación de instalación más detallada.
+Esta es la entrega final del proyecto GeoTurismoSV, la cual cuenta con todas las funcionalidades completadas para su evaluación.
